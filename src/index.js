@@ -11,10 +11,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ThemeProvider theme={theme}>
-      <React.StrictMode>
-        <CssBaseline />
-        <App />
-      </React.StrictMode>
+      {/* <React.StrictMode> */}
+      <CssBaseline />
+      <App />
+      {/* </React.StrictMode> */}
     </ThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")
