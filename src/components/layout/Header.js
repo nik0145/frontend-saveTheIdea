@@ -3,7 +3,8 @@ import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+import { Link as UILink } from "@material-ui/core";
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   appBar: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -38,33 +39,38 @@ const Header = () => {
             SaveTheIdea
           </Typography>
           <nav>
-            <Link
+            <UILink
+              component={Link}
               variant="button"
               color="textPrimary"
-              href="#"
+              to="/"
               className={classes.link}
             >
-              Страница 1
-            </Link>
-            <Link
+              Страница
+            </UILink>
+            <UILink
               variant="button"
+              component={Link}
               color="textPrimary"
-              href="#"
+              to="/"
               className={classes.link}
             >
-              Страница 2
-            </Link>
-            <Link
+              Страница
+            </UILink>
+            <UILink
               variant="button"
+              component={Link}
               color="textPrimary"
-              href="#"
+              to="/"
               className={classes.link}
             >
-              Страница 3
-            </Link>
+              Страница
+            </UILink>
           </nav>
+
           <Button
-            href="#"
+            to="/login"
+            component={Link}
             color="primary"
             variant="outlined"
             className={classes.link}
