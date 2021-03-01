@@ -5,7 +5,7 @@ import { HttpLink } from "apollo-link-http";
 //TODO добавить в напоминание https://github.com/strapi/strapi-starter-react-blog
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: `${process.env.REACT_APP_BACKEND_URL}/graphql`,
+  uri: `${process.env.REACT_APP_API_URL}/graphql`,
 });
 const client = new ApolloClient({
   cache,
