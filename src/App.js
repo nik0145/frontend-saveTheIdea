@@ -1,11 +1,13 @@
 import "./App.css";
 import Layout from "./layouts/default";
 import Login from "./page/Login";
+import Dashboard from "./page/Dashboard";
+import PrivateRoute from "./routers/privateRoute";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 function App() {
   return (
     <div className="App">
@@ -52,6 +54,9 @@ function App() {
               <Login />
             </Layout>
           </Route>
+          <PrivateRoute path="/dashboard">
+            <Dashboard />
+          </PrivateRoute>
         </Switch>
       </Router>
     </div>

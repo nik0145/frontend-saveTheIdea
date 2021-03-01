@@ -43,10 +43,10 @@ const Header = () => {
               component={Link}
               variant="button"
               color="textPrimary"
-              to="/"
+              to="/dashboard"
               className={classes.link}
             >
-              Страница
+              dashboard
             </UILink>
             <UILink
               variant="button"

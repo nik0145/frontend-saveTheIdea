@@ -4,15 +4,19 @@ import './index.css';
 import App from './App';
 import { ThemeProvider } from "@material-ui/core/styles";
 import reportWebVitals from './reportWebVitals';
+import { ApolloProvider } from "@apollo/react-hooks";
+import client from "./utils/apolloClient";
 import theme from "./themes";
 import CssBaseline from '@material-ui/core/CssBaseline';
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <React.StrictMode>
-      <CssBaseline />
-      <App />
-    </React.StrictMode>
-  </ThemeProvider>,
+  <ApolloProvider client={client}>
+    <ThemeProvider theme={theme}>
+      <React.StrictMode>
+        <CssBaseline />
+        <App />
+      </React.StrictMode>
+    </ThemeProvider>
+  </ApolloProvider>,
   document.getElementById("root")
 );
 
