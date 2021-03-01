@@ -1,6 +1,7 @@
 import "./App.css";
 import Layout from "./layouts/default";
 import Login from "./page/Login";
+import NoMatch from "./page/NoMatch";
 import Dashboard from "./page/Dashboard";
 import PrivateRoute from "./routers/privateRoute";
 import Button from "@material-ui/core/Button";
@@ -57,6 +58,9 @@ function App() {
           <PrivateRoute path="/dashboard">
             <Dashboard />
           </PrivateRoute>
+          <Route path="*">
+            <NoMatch />
+          </Route>
         </Switch>
       </Router>
     </div>
