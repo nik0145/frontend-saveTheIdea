@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -32,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Login = (props) => {
   const classes = useStyles();
+  const history = useHistory();
+
   const onHandleLogin = (event) => {
     event.preventDefault();
     let email = event.target.email.value;
@@ -49,9 +52,12 @@ const Login = (props) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const { jwt, user } = data;
-        localStorage.setItem("token", jwt);
-        localStorage.setItem("user", JSON.stringify(user));
+       if (data && data.jwt) {
+         const { jwt, user } = data;
+         localStorage.setItem("token", jwt);
+         localStorage.setItem("user", JSON.stringify(user));
+         history.push("/dashboard");
+       }
       })
       .catch((e) => {
         console.log("An error occurred:", e);
@@ -62,7 +68,7 @@ const Login = (props) => {
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>{/* <LockOutlinedIcon />*/}</Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Вход
         </Typography>
         <form onSubmit={onHandleLogin} className={classes.form} noValidate>
           <TextField
@@ -98,17 +104,12 @@ const Login = (props) => {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Войти
           </Button>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>

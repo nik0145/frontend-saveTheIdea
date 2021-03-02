@@ -1,12 +1,11 @@
 import "./App.css";
 import Layout from "./layouts/default";
 import Login from "./page/Login";
+import Register from "./page/Register";
 import NoMatch from "./page/NoMatch";
 import Dashboard from "./page/Dashboard";
 import PrivateRoute from "./routers/privateRoute";
-import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 function App() {
@@ -24,7 +23,7 @@ function App() {
                   color="textPrimary"
                   gutterBottom
                 >
-                  Текст текст текст
+                  Сохрани свою идею
                 </Typography>
                 <Typography
                   variant="h5"
@@ -32,27 +31,19 @@ function App() {
                   color="textSecondary"
                   component="p"
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. At
-                  alias delectus dolore blanditiis voluptate consequuntur quo
-                  fugit asperiores suscipit assumenda exercitationem, magnam
-                  itaque omnis hic magni. Mollitia similique error tenetur?
+                  И все остальное
                 </Typography>
               </Container>
-              <Box textAlign="center">
-                <Button
-                  style={{ margin: "0 auto" }}
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                >
-                  Hello World
-                </Button>
-              </Box>
             </Layout>
           </Route>
           <Route path="/login">
             <Layout>
               <Login />
+            </Layout>
+          </Route>
+          <Route path="/register">
+            <Layout>
+              <Register />
             </Layout>
           </Route>
           <PrivateRoute path="/dashboard">

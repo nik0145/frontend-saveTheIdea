@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Link as UILink } from "@material-ui/core";
+// import { Link as UILink } from "@material-ui/core";
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -38,7 +38,9 @@ const Header = () => {
           >
             SaveTheIdea
           </Typography>
-          <nav>
+
+          {/* 
+                 <nav>
             <UILink
               component={Link}
               variant="button"
@@ -48,25 +50,7 @@ const Header = () => {
             >
               dashboard
             </UILink>
-            <UILink
-              variant="button"
-              component={Link}
-              color="textPrimary"
-              to="/"
-              className={classes.link}
-            >
-              Страница
-            </UILink>
-            <UILink
-              variant="button"
-              component={Link}
-              color="textPrimary"
-              to="/"
-              className={classes.link}
-            >
-              Страница
-            </UILink>
-          </nav>
+            </nav> */}
 
           <Button
             to="/login"
@@ -76,6 +60,15 @@ const Header = () => {
             className={classes.link}
           >
             Вход
+          </Button>
+          <Button
+            to="/register"
+            component={Link}
+            color="primary"
+            variant="contained"
+            className={classes.link}
+          >
+            Регистрация
           </Button>
         </Toolbar>
       </AppBar>

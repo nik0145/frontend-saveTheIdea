@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
 import clsx from "clsx";
-// import Box from "@material-ui/core/Box";
 import { Formik, Field, Form } from "formik";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -17,7 +16,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
-import { mainListItems, secondaryListItems } from "../components/listItems";
+import { mainListItems } from "../components/listItems";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import { TextField } from "formik-material-ui";
@@ -46,7 +45,7 @@ import DELETE_IDEA from "../queries/idea/deleteIdea";
 import DeleteDialog from "../components/deleteModal";
 
 const Dashboard = () => {
-    const history = useHistory();
+  const history = useHistory();
   const drawerWidth = 240;
   const [openDelete, setOpenDelete] = useState(false);
   const [idDelete, setIdDelete] = useState(null);
@@ -54,6 +53,8 @@ const Dashboard = () => {
   const handleClickOpenDelete = () => {
     setOpenDelete(true);
   };
+  const userData = JSON.parse(localStorage.getItem("user") || "") || null;
+  const { username } = userData;
   const handleAddIdea = async (values, { setSubmitting }) => {
     await addIdea({ variables: values });
     await refetchIdea();
@@ -65,10 +66,10 @@ const Dashboard = () => {
     setOpenDelete(false);
   };
   const onLogout = () => {
-      handleCloseMenu();
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        history.push("/");
+    handleCloseMenu();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    history.push("/");
   };
   const [open, setOpen] = useState(true);
   const handleDrawerOpen = () => {
@@ -105,7 +106,8 @@ const Dashboard = () => {
       display: "flex",
     },
     cardRoot: {
-      maxWidth: 345,
+      minWidth: 300,
+      margin:"0 1rem"
     },
     media: {
       height: 0,
@@ -183,14 +185,12 @@ const Dashboard = () => {
     content: {
       flexGrow: 1,
       height: "100vh",
-      overflow: "auto",
     },
     container: {
       paddingTop: theme.spacing(4),
       display: "flex",
-      justifyContent: "space-around",
-      alignItems: "center",
-      overflow: "auto",
+      flexWrap: "wrap",
+      overflow: "hidden",
       flexDirection: "row",
       paddingBottom: theme.spacing(4),
     },
@@ -251,6 +251,11 @@ const Dashboard = () => {
           >
             Идеи
           </Typography>
+              <Box mr={1}>
+              <Typography >
+                {username}
+              </Typography>
+              </Box>
           <Avatar>
             <IconButton
               aria-label="Меню пользователя"
@@ -295,8 +300,6 @@ const Dashboard = () => {
         </div>
         <Divider />
         <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
