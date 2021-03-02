@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useHistory } from 'react-router-dom';
 import Drawer from "@material-ui/core/Drawer";
 import clsx from "clsx";
 // import Box from "@material-ui/core/Box";
@@ -6,6 +7,7 @@ import { Formik, Field, Form } from "formik";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -15,20 +17,17 @@ import DialogContent from "@material-ui/core/DialogContent";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
-
 import { mainListItems, secondaryListItems } from "../components/listItems";
-import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-// import Grid from "@material-ui/core/Grid";
-// import Paper from "@material-ui/core/Paper";
 import { TextField } from "formik-material-ui";
 import MenuIcon from "@material-ui/icons/Menu";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMutation, useQuery } from "@apollo/react-hooks";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import IDEAS_QUERY from "../queries/idea/ideas";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -47,6 +46,7 @@ import DELETE_IDEA from "../queries/idea/deleteIdea";
 import DeleteDialog from "../components/deleteModal";
 
 const Dashboard = () => {
+    const history = useHistory();
   const drawerWidth = 240;
   const [openDelete, setOpenDelete] = useState(false);
   const [idDelete, setIdDelete] = useState(null);
@@ -64,6 +64,12 @@ const Dashboard = () => {
   const handleCloseDelete = () => {
     setOpenDelete(false);
   };
+  const onLogout = () => {
+      handleCloseMenu();
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        history.push("/");
+  };
   const [open, setOpen] = useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -75,6 +81,19 @@ const Dashboard = () => {
     setIdDelete(id);
     handleClickOpenDelete();
   };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
+
+  const handleClickMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  // TODO https://www.apollographql.com/docs/react/caching/cache-interaction/#example-adding-an-item-to-a-list
   const onDeleteIdea = async () => {
     await deleteIdea({ variables: { id: idDelete } });
     await refetchIdea();
@@ -200,9 +219,7 @@ const Dashboard = () => {
   const [addIdea] = useMutation(ADD_IDEA);
 
   const [deleteIdea] = useMutation(DELETE_IDEA);
-  const { loading, error, data, refetch: refetchIdea } = useQuery(
-    IDEAS_QUERY
-  );
+  const { loading, error, data, refetch: refetchIdea } = useQuery(IDEAS_QUERY);
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
 
@@ -232,13 +249,36 @@ const Dashboard = () => {
             noWrap
             className={classes.title}
           >
-            Dashboard
+            Идеи
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <Avatar>
+            <IconButton
+              aria-label="Меню пользователя"
+              aria-controls="user-menu"
+              aria-haspopup="true"
+              onClick={handleClickMenu}
+            >
+              <AccountCircleIcon />
+            </IconButton>
+          </Avatar>
+          <Menu
+            id="user-menu"
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            anchorEl={anchorEl}
+            open={openMenu}
+            onClose={handleCloseMenu}
+          >
+            <MenuItem onClick={handleCloseMenu}>Профиль</MenuItem>
+            <MenuItem onClick={onLogout}>Выйти</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <Drawer
