@@ -15,22 +15,55 @@ import DialogContent from "@material-ui/core/DialogContent";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
+
 import { mainListItems, secondaryListItems } from "../components/listItems";
 import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+// import Grid from "@material-ui/core/Grid";
+// import Paper from "@material-ui/core/Paper";
 import { TextField } from "formik-material-ui";
 import MenuIcon from "@material-ui/icons/Menu";
+import DeleteIcon from "@material-ui/icons/Delete";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import IDEAS_QUERY from "../queries/idea/ideas";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import Avatar from "@material-ui/core/Avatar";
+// import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { red } from "@material-ui/core/colors";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+// import Collapse from "@material-ui/core/Collapse";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 import ADD_IDEA from "../queries/idea/addIdea";
-const Dashboard = (props) => {
-  const drawerWidth = 240;
+import DELETE_IDEA from "../queries/idea/deleteIdea";
+import DeleteDialog from "../components/deleteModal";
 
+const Dashboard = () => {
+  const drawerWidth = 240;
+  const [openDelete, setOpenDelete] = useState(false);
+  const [idDelete, setIdDelete] = useState(null);
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+  const handleAddIdea = async (values, { setSubmitting }) => {
+    await addIdea({ variables: values });
+    await refetchIdea();
+    setSubmitting(false);
+    handleClose();
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
   const [open, setOpen] = useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -38,10 +71,41 @@ const Dashboard = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const onOpenModalDelete = (id) => {
+    setIdDelete(id);
+    handleClickOpenDelete();
+  };
+  const onDeleteIdea = async () => {
+    await deleteIdea({ variables: { id: idDelete } });
+    await refetchIdea();
+    setIdDelete(null);
+    handleCloseDelete();
+  };
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
     },
+    cardRoot: {
+      maxWidth: 345,
+    },
+    media: {
+      height: 0,
+      paddingTop: "56.25%", // 16:9
+    },
+    expand: {
+      transform: "rotate(0deg)",
+      marginLeft: "auto",
+      transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shortest,
+      }),
+    },
+    expandOpen: {
+      transform: "rotate(180deg)",
+    },
+    avatar: {
+      backgroundColor: red[500],
+    },
+
     toolbar: {
       paddingRight: 24, // keep right padding when drawer closed
     },
@@ -104,6 +168,11 @@ const Dashboard = (props) => {
     },
     container: {
       paddingTop: theme.spacing(4),
+      display: "flex",
+      justifyContent: "space-around",
+      alignItems: "center",
+      overflow: "auto",
+      flexDirection: "row",
       paddingBottom: theme.spacing(4),
     },
     paper: {
@@ -118,8 +187,7 @@ const Dashboard = (props) => {
   }));
 
   const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  
+  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const [openModal, setOpenModal] = useState(false);
   const handleClickOpen = () => {
     setOpenModal(true);
@@ -128,8 +196,13 @@ const Dashboard = (props) => {
   const handleClose = () => {
     setOpenModal(false);
   };
+  //TODO устал возиться с обновлением кеша, оставлю это на будущее
   const [addIdea] = useMutation(ADD_IDEA);
-  const { loading, error, data } = useQuery(IDEAS_QUERY);
+
+  const [deleteIdea] = useMutation(DELETE_IDEA);
+  const { loading, error, data, refetch: refetchIdea } = useQuery(
+    IDEAS_QUERY
+  );
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
 
@@ -187,37 +260,70 @@ const Dashboard = (props) => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+        <Box m="2rem">
+          <Button
+            onClick={handleClickOpen}
+            variant="contained"
+            color="primary"
+            disableElevation
+          >
+            Добавить идею
+          </Button>
+          <Container maxWidth="lg" className={classes.container}>
             {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                {data.ideas.map((idea) => {
-                  return <div key={idea.id}>idea.title:{idea.title}</div>;
-                })}
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Button
-                  onClick={handleClickOpen}
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                >
-                  Добавить идею
-                </Button>
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <div>asdasd</div>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
+            {data.ideas.map((idea) => {
+              return (
+                <Card key={idea.id} className={classes.cardRoot}>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="recipe" className={classes.avatar}>
+                        R
+                      </Avatar>
+                    }
+                    action={
+                      <IconButton aria-label="settings">
+                        <MoreVertIcon />
+                      </IconButton>
+                    }
+                    title="Shrimp and Chorizo Paella"
+                    subheader="September 14, 2016"
+                  />
+                  <CardMedia
+                    className={classes.media}
+                    image="https://i.picsum.photos/id/883/200/200.jpg?hmac=evNCTcW3jHI_xOnAn7LKuFH_YkA8r6WdQovmsyoM1IY"
+                    title="Paella dish"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {idea.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {idea.description}
+                    </Typography>
+                  </CardContent>
+                  <CardActions disableSpacing>
+                    <IconButton
+                      onClick={() => onOpenModalDelete(idea.id)}
+                      aria-label="delete"
+                    >
+                      <DeleteIcon variant="contained" color="error" />
+                    </IconButton>
+                    <IconButton aria-label="add to favorites">
+                      <FavoriteIcon />
+                    </IconButton>
+                    <IconButton aria-label="share">
+                      <ShareIcon />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              );
+            })}
+          </Container>
+        </Box>
       </main>
       <Dialog
         open={openModal}
@@ -231,12 +337,7 @@ const Dashboard = (props) => {
             title: "",
             description: "",
           }}
-          onSubmit={async (values, { setSubmitting }) => {
-            console.log(values);
-              const el = await addIdea({ variables: values });
-              console.log(el);
-            setSubmitting(false);
-          }}
+          onSubmit={handleAddIdea}
         >
           {({ submitForm, isSubmitting }) => (
             <DialogContent>
@@ -265,6 +366,12 @@ const Dashboard = (props) => {
           )}
         </Formik>
       </Dialog>
+      <DeleteDialog
+        open={openDelete}
+        onClose={handleCloseDelete}
+        onClick={handleClickOpenDelete}
+        onDelete={onDeleteIdea}
+      ></DeleteDialog>
     </div>
   );
 };
