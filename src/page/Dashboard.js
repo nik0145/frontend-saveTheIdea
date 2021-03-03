@@ -107,7 +107,7 @@ const Dashboard = () => {
     },
     cardRoot: {
       minWidth: 300,
-      margin:"0 1rem"
+      margin:"1rem"
     },
     media: {
       height: 0,
@@ -194,6 +194,9 @@ const Dashboard = () => {
       flexDirection: "row",
       paddingBottom: theme.spacing(4),
     },
+    boxMain:{
+      width:"100%"
+    },
     paper: {
       padding: theme.spacing(2),
       display: "flex",
@@ -251,11 +254,9 @@ const Dashboard = () => {
           >
             Идеи
           </Typography>
-              <Box mr={1}>
-              <Typography >
-                {username}
-              </Typography>
-              </Box>
+          <Box mr={1}>
+            <Typography>{username}</Typography>
+          </Box>
           <Avatar>
             <IconButton
               aria-label="Меню пользователя"
@@ -303,7 +304,7 @@ const Dashboard = () => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Box m="2rem">
+        <Box m="2rem" className={classes.boxMain}>
           <Button
             onClick={handleClickOpen}
             variant="contained"

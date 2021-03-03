@@ -69,7 +69,7 @@ export default function Register() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+    Регистрация
         </Typography>
         <form className={classes.form} onSubmit={onHandleRegister}>
           <Grid container spacing={2}>
@@ -81,7 +81,7 @@ export default function Register() {
                 required
                 fullWidth
                 id="username"
-                label="Username"
+                label="Имя пользователя"
                 autoFocus
               />
             </Grid>
@@ -92,7 +92,7 @@ export default function Register() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
                 autoComplete="email"
               />
@@ -103,7 +103,7 @@ export default function Register() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Пароль"
                 type="password"
                 id="password"
                 autoComplete="current-password"

@@ -1,9 +1,9 @@
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Checkbox from "@material-ui/core/Checkbox";
+// import Link from "@material-ui/core/Link";
+// import Grid from "@material-ui/core/Grid";
 // import Box from "@material-ui/core/Box";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -77,7 +77,7 @@ const Login = (props) => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Имя пользователя"
             name="email"
             autoComplete="email"
             autoFocus
@@ -88,15 +88,19 @@ const Login = (props) => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Пароль"
             type="password"
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
+          {
+            /* 
+            <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+            />
+            */
+          }
           <Button
             type="submit"
             fullWidth
@@ -106,13 +110,17 @@ const Login = (props) => {
           >
             Войти
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+          {
+            /* 
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
+             */
+          }
         </form>
       </div>
     </Container>
