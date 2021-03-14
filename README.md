@@ -68,3 +68,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+идеи что добавить в приложение.
+нужно сохранять полезные ссылки и сделать их по типам или категориям.
+можно даже сделать ежеднедневник из этого приложения.
+сохранять полезный материал 
