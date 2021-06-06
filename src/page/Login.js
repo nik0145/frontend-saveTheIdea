@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -34,7 +35,11 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const classes = useStyles();
   const history = useHistory();
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  function validateForm(){
+     return email.length > 0 && password.length > 0;
+  }
   const onHandleLogin = (event) => {
     event.preventDefault();
     let email = event.target.email.value;
@@ -52,12 +57,12 @@ const Login = (props) => {
     })
       .then((response) => response.json())
       .then((data) => {
-       if (data && data.jwt) {
-         const { jwt, user } = data;
-         localStorage.setItem("token", jwt);
-         localStorage.setItem("user", JSON.stringify(user));
-         history.push("/dashboard");
-       }
+        if (data && data.jwt) {
+          const { jwt, user } = data;
+          localStorage.setItem("token", jwt);
+          localStorage.setItem("user", JSON.stringify(user));
+          history.push("/dashboard");
+        }
       })
       .catch((e) => {
         console.log("An error occurred:", e);
@@ -75,8 +80,9 @@ const Login = (props) => {
             variant="outlined"
             margin="normal"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             fullWidth
-            id="email"
             label="Имя пользователя"
             name="email"
             autoComplete="email"
@@ -87,31 +93,30 @@ const Login = (props) => {
             margin="normal"
             required
             fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             name="password"
             label="Пароль"
             type="password"
-            id="password"
             autoComplete="current-password"
           />
-          {
-            /* 
+          {/* 
             <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
             />
-            */
-          }
+            */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
+            disabled={!validateForm()}
             color="primary"
             className={classes.submit}
           >
             Войти
           </Button>
-          {
-            /* 
+          {/* 
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -119,8 +124,7 @@ const Login = (props) => {
                 </Link>
               </Grid>
             </Grid>
-             */
-          }
+             */}
         </form>
       </div>
     </Container>
