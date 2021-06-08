@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
+import { show } from "../components/toast/notify";
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -68,6 +68,16 @@ const Login = (props) => {
         console.log("An error occurred:", e);
       });
   };
+  useEffect(() => {
+    console.log("mounted");
+    // setInterval(() => {
+         show("Привет");
+    // }, 1000);
+   
+    return () => {
+      console.log('destoyed')
+    };
+  }, []);
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
