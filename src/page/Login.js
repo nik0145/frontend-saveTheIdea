@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { show } from "../components/toast/notify";
+import { useSnackbar } from 'notistack';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -33,13 +33,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Login = (props) => {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  function validateForm(){
-     return email.length > 0 && password.length > 0;
+  function validateForm() {
+    return email.length > 0 && password.length > 0;
   }
+  //https://stackoverflow.com/questions/63386996/unable-to-use-a-hook-in-a-component
   const onHandleLogin = (event) => {
     event.preventDefault();
     let email = event.target.email.value;
@@ -70,14 +72,14 @@ const Login = (props) => {
   };
   useEffect(() => {
     console.log("mounted");
-    // setInterval(() => {
-         show("Привет");
-    // }, 1000);
-   
+    setInterval(() => {
+      enqueueSnackbar("ekekek", { variant: "error" });
+    }, 1000);
+
     return () => {
-      console.log('destoyed')
+      console.log("destoyed");
     };
-  }, []);
+  }, [enqueueSnackbar]);
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>

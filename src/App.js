@@ -8,7 +8,6 @@ import PrivateRoute from "./routers/privateRoute";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import ContainerToast from "./components/toast/Container";
 function App() {
   return (
     <div className="App">
@@ -55,7 +54,6 @@ function App() {
           </Route>
         </Switch>
       </Router>
-      <ContainerToast/>
     </div>
   );
 }

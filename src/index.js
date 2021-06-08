@@ -8,13 +8,16 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import client from "./utils/apolloClient";
 import theme from "./themes";
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { SnackbarProvider } from "notistack";
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ThemeProvider theme={theme}>
-      {/* <React.StrictMode> */}
-      <CssBaseline />
-      <App />
-      {/* </React.StrictMode> */}
+      <SnackbarProvider maxSnack={8}>
+        {/* <React.StrictMode> */}
+        <CssBaseline />
+        <App />
+        {/* </React.StrictMode> */}
+      </SnackbarProvider>
     </ThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")
