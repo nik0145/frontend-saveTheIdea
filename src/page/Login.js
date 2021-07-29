@@ -12,7 +12,10 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
+import { useMutation } from "@apollo/client";
+import LOGIN_MUTATION from "../queries/auth/login";
+import { AUTH_TOKEN } from "../constants";
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -38,44 +41,69 @@ const Login = (props) => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [onLogin] = useMutation(LOGIN_MUTATION);
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
-  //https://stackoverflow.com/questions/63386996/unable-to-use-a-hook-in-a-component
-  const onHandleLogin = (event) => {
+  const onHandleLogin = async (event) => {
     event.preventDefault();
-    let email = event.target.email.value;
-    let password = event.target.password.value;
-
-    fetch(`${process.env.REACT_APP_API_URL}/auth/local`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify({
-        identifier: email,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data && data.jwt) {
-          const { jwt, user } = data;
-          localStorage.setItem("token", jwt);
-          localStorage.setItem("user", JSON.stringify(user));
-          history.push("/dashboard");
-        }
-      })
-      .catch((e) => {
-        console.log("An error occurred:", e);
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    try {
+      let {
+        data: { login },
+      } = await onLogin({
+        variables: {
+          identifier: email,
+          password: password,
+        },
       });
+      localStorage.setItem(AUTH_TOKEN, login.jwt);
+      localStorage.setItem("user", JSON.stringify(login.user));
+      history.push("/dashboard");
+    } catch (error) {
+      error.graphQLErrors.forEach((err) => {
+        err.extensions.exception.data.message[0].messages.forEach(
+          ({ message }) => {
+            enqueueSnackbar(message, {
+              variant: "error",
+              autoHideDuration: 3000,
+            });
+          }
+        );
+      });
+      //  console.log(error.networkError.result.errors);
+      //  console.log(error.message);
+
+      //  console.log(error.extraInfo);
+      //  console.log(error.networkError.result.errors);
+    }
+
+    // fetch(`${process.env.REACT_APP_API_URL}/auth/local`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json;charset=utf-8",
+    //   },
+    //   body: JSON.stringify({
+    //     identifier: email,
+    //     password: password,
+    //   }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     if (data && data.jwt) {
+    //       const { jwt, user } = data;
+    //       localStorage.setItem("token", jwt);
+    //       localStorage.setItem("user", JSON.stringify(user));
+    //       history.push("/dashboard");
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     console.log("An error occurred:", e);
+    //   });
   };
   useEffect(() => {
     console.log("mounted");
-    setInterval(() => {
-      enqueueSnackbar("ekekek", { variant: "error" });
-    }, 1000);
-
     return () => {
       console.log("destoyed");
     };
