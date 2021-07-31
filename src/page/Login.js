@@ -72,35 +72,7 @@ const Login = (props) => {
           }
         );
       });
-      //  console.log(error.networkError.result.errors);
-      //  console.log(error.message);
-
-      //  console.log(error.extraInfo);
-      //  console.log(error.networkError.result.errors);
     }
-
-    // fetch(`${process.env.REACT_APP_API_URL}/auth/local`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json;charset=utf-8",
-    //   },
-    //   body: JSON.stringify({
-    //     identifier: email,
-    //     password: password,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data && data.jwt) {
-    //       const { jwt, user } = data;
-    //       localStorage.setItem("token", jwt);
-    //       localStorage.setItem("user", JSON.stringify(user));
-    //       history.push("/dashboard");
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     console.log("An error occurred:", e);
-    //   });
   };
   useEffect(() => {
     console.log("mounted");

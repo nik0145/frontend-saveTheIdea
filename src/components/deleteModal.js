@@ -9,9 +9,6 @@ export default function DeleteDialog(props) {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={props.onClick}>
-        Open alert dialog
-      </Button>
       <Dialog
         open={props.open}
         onClose={props.onClose}

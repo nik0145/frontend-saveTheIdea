@@ -1,9 +1,18 @@
 import "./App.css";
 import Layout from "./layouts/default";
+
 import Login from "./page/Login";
 import Register from "./page/Register";
 import NoMatch from "./page/NoMatch";
-import Dashboard from "./page/Dashboard";
+import Dashboard from "./layouts/dashboard";
+// <Dashboard>
+//   <PrivateRoute path="/dashboard">
+//     <Ideas />
+//   </PrivateRoute>
+//   <PrivateRoute path="/memes">
+//     <Memes />
+//   </PrivateRoute>
+// </Dashboard>;
 import PrivateRoute from "./routers/privateRoute";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -49,6 +58,7 @@ function App() {
           <PrivateRoute path="/dashboard">
             <Dashboard />
           </PrivateRoute>
+          
           <Route path="*">
             <NoMatch />
           </Route>
