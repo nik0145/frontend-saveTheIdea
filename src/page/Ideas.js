@@ -1,9 +1,7 @@
 import { useState } from "react";
-import clsx from "clsx";
 import { Formik, Field, Form } from "formik";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -32,7 +30,6 @@ import DeleteDialog from "../components/deleteModal";
 
 
 const Ideas = () => {
- const drawerWidth = 240;
  const [openDelete, setOpenDelete] = useState(false);
  const [idDelete, setIdDelete] = useState(null);
 
