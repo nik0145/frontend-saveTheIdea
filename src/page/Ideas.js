@@ -221,6 +221,7 @@ return (
     <DeleteDialog
       open={openDelete}
       onClose={handleCloseDelete}
+      name="идею"
       onClick={handleClickOpenDelete}
       onDelete={onDeleteIdea}
     ></DeleteDialog>

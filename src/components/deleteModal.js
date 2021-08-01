@@ -15,12 +15,11 @@ export default function DeleteDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Удаление записи"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Удаление записи"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          Вы действительно хотите удалить идею ? </DialogContentText>
+            Вы действительно хотите удалить {props.name} ?{" "}
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={props.onClose} color="primary">
