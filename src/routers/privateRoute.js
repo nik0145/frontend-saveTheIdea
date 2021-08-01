@@ -4,12 +4,12 @@ import { Redirect, Route } from "react-router-dom";
 
 const PrivateRoute = ({ children, ...rest }) => {
     // починить крч сделать нормально
-  let kek = localStorage.getItem("token");
+  let token = localStorage.getItem("token");
   return (
     <Route
       {...rest}
       render={(props) =>
-        kek ? (
+        token ? (
           children
         ) : (
           <Redirect

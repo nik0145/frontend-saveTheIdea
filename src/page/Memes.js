@@ -11,6 +11,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { makeStyles } from "@material-ui/core";
 import { useMutation } from "@apollo/client";
 import UPLOAD_FILE from "../queries/fileUpload";
+import ADD_MEME from "../queries/meme/createMeme";
 const useStyles = makeStyles((theme) => ({
   form: {
     "& > *": {
@@ -24,27 +25,34 @@ const useStyles = makeStyles((theme) => ({
 const Memes = () => {
   const classes = useStyles();
   const [onUpload] = useMutation(UPLOAD_FILE);
-  const handleAddMeme = async (values) => {
-      try {
-        console.log(image);
-        let ekek = await onUpload({
-          variables: {
-            file: image,
-            field: "image",
-            ref: "memes",
-            // publish: false,
-          },
-        });
-        console.log(ekek);
-      } catch (error) {
-        console.log(error);
-      }
-      
+  const [addMeme] = useMutation(ADD_MEME);
+  const handleAddMeme = async ({ isPublish }, { setSubmitting }) => {
+    try {
+      const { data } = await onUpload({
+        variables: {
+          file: image,
+          field: "image",
+          ref: "memes",
+        },
+      });
+      const userData = JSON.parse(localStorage.getItem("user") || "") || null;
+      const { id } = userData;
+      await addMeme({
+        variables: {
+          image: data.upload.id,
+          users_permissions_user: id,
+          publish: isPublish,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     // console.log(values);
     //    await addIdea({ variables: values });
     //    await refetchIdea();
-    //    setSubmitting(false);
-    // handleClose();
+    setSubmitting(false);
+    handleClose();
   };
 
   const [openModal, setOpenModal] = useState(false);
