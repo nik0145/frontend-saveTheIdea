@@ -23,15 +23,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Memes = () => {
   const classes = useStyles();
-//   const [onUpload] = useMutation(UPLOAD_FILE);
+  const [onUpload] = useMutation(UPLOAD_FILE);
   const handleAddMeme = async (values) => {
-    //   await onUpload({
-    //     variables: {
-    //       file: image,
-    //     },
-    //   });
-    console.log(values);
-    console.log(image);
+      try {
+        console.log(image);
+        let ekek = await onUpload({
+          variables: {
+            file: image,
+            field: "image",
+            ref: "memes",
+            // publish: false,
+          },
+        });
+        console.log(ekek);
+      } catch (error) {
+        console.log(error);
+      }
+      
+    // console.log(values);
     //    await addIdea({ variables: values });
     //    await refetchIdea();
     //    setSubmitting(false);
